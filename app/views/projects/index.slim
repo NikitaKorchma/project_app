@@ -1,0 +1,50 @@
+- if flash.any?
+  - flash.each do |key, value|
+    h1 = value
+
+- if user_signed_in?
+  h3 = link_to 'Create project', new_project_path
+
+h1 Public Projects
+- if @public_projects.any?
+  table
+    thead
+      tr
+        th Logo
+        th Name
+        th Type
+        th Description
+    tbody
+      - @public_projects.each do |project|
+        tr
+          td = image_tag project.logo, width: '50px'
+          td = project.name
+          td = project.project_type.titleize
+          td = project.description
+          - if project.user == current_user
+            td = link_to 'Edit', edit_project_path(project)
+            td = link_to 'Delete', project_path(project), method: :delete
+- else
+  p There are no public projects
+
+- if user_signed_in?
+  h1 Projects
+  - if @private_projects.any?
+    table
+      thead
+        tr
+          th Logo
+          th Name
+          th Type
+          th Description
+      tbody
+        - @private_projects.each do |project|
+          tr
+            td = image_tag project.logo, width: '50px'
+            td = project.name
+            td = project.project_type.titleize
+            td = project.description
+            td = link_to 'Edit', edit_project_path(project)
+            td = link_to 'Delete', project_path(project), method: :delete
+  - else
+    p There are no projects, #{link_to 'create one', new_project_path}

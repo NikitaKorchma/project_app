@@ -1,0 +1,18 @@
+h3 = link_to 'Back', root_path
+
+- if flash.any?
+  h2 Errors
+  - flash.each do |key, value|
+    p = value
+
+= form_for @project do |f|
+  div
+    = f.file_field :logo
+  div
+    = f.text_field :name
+  div
+    = f.select :project_type, options_for_select(Project.project_types.keys.map { |type| [type.sub('_type', '').titleize, type] })
+  div
+    = f.text_area :description
+  div
+    = f.submit
